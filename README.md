@@ -1,17 +1,18 @@
-# ESP32-C6-RGB-LED-Control
-This repository contains Arduino code for controlling the built-in RGB LED on the ESP32-C6 microcontroller. It provides a simple and flexible way to manage LED colors and create blinking patterns.
+# ESP32-C6 RGB LED Control
+
+This repository contains Arduino code for controlling the built-in RGB LED on the ESP32-C6 microcontroller. It provides a simple and flexible way to manage LED colors.
+
+## Important Note
+
+The built-in RGB LED on the ESP32-C6 is connected to `GPIO 8`. This is already configured in the code, but it's crucial to know if you're working with other components or modifying the pin configuration.
 
 ## Features
 
-- Easy control of the built-in RGB LED
+- Easy control of the built-in RGB LED on GPIO 8
 - Predefined color constants for common colors
 - Simple function to set any RGB color
-- Flexible blinking function with customizable timing
-- Example usage demonstrating various light patterns
+- Easily expandable to include more colors and patterns
 
-## Hardware Requirements
-
-- ESP32-C6 board (ensure your board has a built-in RGB LED)
 
 ## Software Requirements
 
@@ -34,31 +35,33 @@ This repository contains Arduino code for controlling the built-in RGB LED on th
    - Search for "Adafruit NeoPixel"
    - Install the latest version
 
+...
+
+## Customization
+
+- The `LED_PIN` is set to `8` for the built-in LED. Do not change this unless you're using an external LED.
+- Add new color definitions in the `RGB` struct format
+- Create new light patterns by combining `setColor()` function with different delays
+
+...
+
 ## Usage
 
-1. Clone this repository or download the `esp32_c6_rgb_led_control.ino` file
+1. Download the `esp32_c6_rgb_led_control.ino` file
 2. Open the `.ino` file in Arduino IDE
 3. Select your ESP32-C6 board from Tools > Board menu
 4. Select the appropriate port from Tools > Port menu
 5. Click the Upload button to flash the code to your ESP32-C6
 
-## Customization
-
-- Modify the `LED_PIN` constant if your built-in LED uses a different GPIO pin
-- Add new color definitions in the `RGB` struct format
-- Create new light patterns by combining `setColor()` and `blinkColor()` functions
-
 ## Example
 
-The provided example in the `loop()` function demonstrates blinking the LED in red, green, and blue:
+The provided example in the `loop()` function demonstrates blinking the LED in red:
 
 ```cpp
 void loop() {
-    blinkColor(COLOR_RED, 3, 500, 500);    // Blink red 3 times
+    setColor(COLOR_RED);
     delay(1000);
-    blinkColor(COLOR_GREEN, 3, 500, 500);  // Blink green 3 times
-    delay(1000);
-    blinkColor(COLOR_BLUE, 3, 500, 500);   // Blink blue 3 times
+    setColor(LED_OFF);
     delay(1000);
 }
 ```
@@ -70,8 +73,3 @@ Contributions to improve the code or add new features are welcome. Please feel f
 ## License
 
 This project is released under the MIT License. See the `LICENSE` file for details.
-
-## Acknowledgments
-
-- Thanks to Adafruit for their NeoPixel library
-- Inspired by the ESP32 community and various LED control projects
