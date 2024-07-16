@@ -42,6 +42,8 @@ The built-in RGB LED on the ESP32-C6 is connected to `GPIO 8`. This is already c
 - The `LED_PIN` is set to `8` for the built-in LED. Do not change this unless you're using an external LED.
 - Add new color definitions in the `RGB` struct format
 - Create new light patterns by combining `setColor()` function with different delays
+- Modify the `BLINK_DURATION` to change the speed of the blinking pattern
+- Create new light patterns by combining setColor() and blinkColor() function
 
 ...
 
@@ -55,14 +57,34 @@ The built-in RGB LED on the ESP32-C6 is connected to `GPIO 8`. This is already c
 
 ## Example
 
-The provided example in the `loop()` function demonstrates blinking the LED in red:
+Here's the basic code structure:
 
 ```cpp
+#include <Adafruit_NeoPixel.h>
+constexpr uint8_t LED_PIN = 8;
+constexpr uint8_t NUM_LEDS = 1;
+Adafruit_NeoPixel rgbLed(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
+struct RGB {
+    uint8_t r, g, b;
+};
+
+constexpr RGB COLOR_OFF   = {0, 0, 0};
+// ...Feel free to add more colors here...
+constexpr RGB CUSTOM_COLOR = {255, 0, 255}; 
+
+void setup() {
+    rgbLed.begin(); 
+    rgbLed.show(); 
+}
+void setColor(const RGB& color) {
+    rgbLed.setPixelColor(0, rgbLed.Color(color.r, color.g, color.b));
+    rgbLed.show();
+}
 void loop() {
-    setColor(COLOR_RED);
-    delay(1000);
-    setColor(LED_OFF);
-    delay(1000);
+    setColor(CUSTOM_COLOR);
+    delay(500);
+    setColor(COLOR_OFF);
+    delay(500);
 }
 ```
 
