@@ -12,36 +12,59 @@
             font-family: Arial, sans-serif; 
             line-height: 1.6; 
             color: #333; 
-            max-width: 800px; 
-            margin: 0 auto; 
-            padding: 20px; 
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #f4f4f4;
+            padding: 10px 0;
+            position: relative;
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
         h1, h2 { color: #0366d6; }
         pre { background-color: #f6f8fa; padding: 16px; overflow: auto; }
         img { max-width: 100%; height: auto; margin: 20px 0; }
         .highlight { background-color: #fffbcc; padding: 5px; }
-        .header-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        #led-demo {
-            width: 40px;
-            height: 40px;
+        #led-logo {
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background-color: #000;
             box-shadow: 0 0 10px #000;
-            transition: all 0.5s ease;
-            flex-shrink: 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+        #led-logo:hover {
+            transform: scale(1.1);
+        }
+        #led-logo span {
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            text-align: center;
         }
         @media (max-width: 600px) {
-            .header-container {
+            .header-content {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            #led-demo {
-                align-self: center;
+            #led-logo {
                 margin-bottom: 10px;
             }
         }
@@ -60,18 +83,121 @@
     </script>
 </head>
 <body>
-    <div class="header-container">
-        <h1>ESP32-C6 RGB LED Control</h1>
-        <div id="led-demo"></div>
+    <header>
+        <div class="header-content">
+            <a id="led-logo" href="https://github.com/h4fide/ESP32-C6-RGB-LED-Control" target="_blank" title="Visit GitHub Repository">
+                <span>RGB LED</span>
+            </a>
+            <h1>ESP32-C6 RGB LED Control</h1>
+        </div>
+    </header>
+    <div class="container">
+        <p>Welcome to the ESP32-C6 RGB LED Control project! This repository contains Arduino code for easily managing the built-in RGB LED on ESP32-C6 microcontrollers, perfect for IoT and embedded systems projects.</p>
+        
+        <h2>ESP32-C6 Board Overview</h2>
+        <img src="https://docs.espressif.com/projects/esp-dev-kits/en/latest/_images/esp32-c6-devkitm-1-v1-annotated-photo.png" alt="ESP32-C6 DevKitM-1 Board" title="ESP32-C6 DevKitM-1 Board with Annotations">
+        <p>The image above shows the ESP32-C6 DevKitM-1 board. <span class="highlight">The built-in RGB LED is connected to GPIO 8</span>, which is already configured in our code.</p>
+
+        
+    <h2>Key Features</h2>
+    <ul>
+        <li>Easy control of the built-in RGB LED on <strong>GPIO 8</strong></li>
+        <li>Predefined color constants for common colors</li>
+        <li>Simple function to set any RGB color</li>
+        <li>Easily expandable to include more colors and patterns</li>
+    </ul>
+
+    <h2>Software Requirements</h2>
+    <ul>
+        <li>Arduino IDE</li>
+        <li>ESP32 board support for Arduino IDE</li>
+        <li>Adafruit NeoPixel library</li>
+    </ul>
+
+    <h2>Installation</h2>
+    <ol>
+        <li>Install the Arduino IDE from <a href="https://www.arduino.cc/en/software">arduino.cc</a></li>
+        <li>Add ESP32 board support to Arduino IDE:
+            <ul>
+                <li>Open Arduino IDE</li>
+                <li>Go to File > Preferences</li>
+                <li>Add the following URL to "Additional Boards Manager URLs":<br>
+                <code>https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json</code></li>
+                <li>Go to Tools > Board > Boards Manager</li>
+                <li>Search for "esp32" and install the latest version</li>
+            </ul>
+        </li>
+        <li>Install the Adafruit NeoPixel library:
+            <ul>
+                <li>Go to Sketch > Include Library > Manage Libraries</li>
+                <li>Search for "Adafruit NeoPixel"</li>
+                <li>Install the latest version</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h2>Quick Start</h2>
+    <pre><code>
+#include &lt;Adafruit_NeoPixel.h&gt;
+
+#define LED_PIN 8  // The ESP32-C6 pin connected to the built-in RGB LED
+#define NUM_LEDS 1
+
+Adafruit_NeoPixel rgbLed(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
+
+struct RGB {
+    uint8_t r, g, b;
+};
+
+constexpr RGB COLOR_OFF = {0, 0, 0};
+constexpr RGB COLOR_RED = {255, 0, 0};
+// ... Add more color definitions here
+
+void setup() {
+    rgbLed.begin();
+    rgbLed.show();
+}
+
+void setColor(const RGB& color) {
+    rgbLed.setPixelColor(0, rgbLed.Color(color.r, color.g, color.b));
+    rgbLed.show();
+}
+
+void loop() {
+    setColor(COLOR_RED);
+    delay(500);
+    setColor(COLOR_OFF);
+    delay(500);
+}
+    </code></pre>
+
+    <h2>Customization</h2>
+    <ul>
+        <li>The <code>LED_PIN</code> is set to <code>8</code> for the built-in LED. Do not change this unless you're using an external LED.</li>
+        <li>Add new color definitions in the <code>RGB</code> struct format</li>
+        <li>Create new light patterns by combining <code>setColor()</code> function with different delays</li>
+        <li>Modify the <code>BLINK_DURATION</code> to change the speed of the blinking pattern</li>
+        <li>Create new light patterns by combining <code>setColor()</code> and <code>blinkColor()</code> function</li>
+    </ul>
+
+    <h2>Usage</h2>
+    <ol>
+        <li>Download the <code>esp32_c6_rgb_led_control.ino</code> file</li>
+        <li>Open the <code>.ino</code> file in Arduino IDE</li>
+        <li>Select your ESP32-C6 board from Tools > Board menu</li>
+        <li>Select the appropriate port from Tools > Port menu</li>
+        <li>Click the Upload button to flash the code to your ESP32-C6</li>
+    </ol>
+
+    <h2>Contributing</h2>
+    <p>Contributions to improve the code or add new features are welcome. Please feel free to submit a pull request or open an issue on our <a href="https://github.com/h4fide/ESP32-C6-RGB-LED-Control">GitHub repository</a>.</p>
+
+    <h2>License</h2>
+    <p>This project is released under the MIT License. See the <code>LICENSE</code> file in the repository for details.</p>
     </div>
-    <p>Welcome to the ESP32-C6 RGB LED Control project! This repository contains Arduino code for easily managing the built-in RGB LED on ESP32-C6 microcontrollers, perfect for IoT and embedded systems projects.</p>
-    
-    <h2>ESP32-C6 Board Overview</h2>
-    <img src="https://docs.espressif.com/projects/esp-dev-kits/en/latest/_images/esp32-c6-devkitm-1-v1-annotated-photo.png" alt="ESP32-C6 DevKitM-1 Board" title="ESP32-C6 DevKitM-1 Board with Annotations">
-    <p>The image above shows the ESP32-C6 DevKitM-1 board. <span class="highlight">The built-in RGB LED is connected to GPIO 8</span>, which is already configured in our code.</p>
 
     <script>
-        const led = document.getElementById('led-demo');
+        const led = document.getElementById('led-logo');
         const colors = [
             '#ff0000', '#ff7f00', '#ffff00', '#00ff00', 
             '#0000ff', '#4b0082', '#9400d3', '#ffffff'
@@ -86,5 +212,54 @@
 
         setInterval(changeColor, 1000);
     </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32-C6 RGB LED Control | Arduino Project for IoT</title>
+    <meta name="google-site-verification" content="v5QEyxSw-jo1QlzVwtkBSXKEAX9Fk8g14d8ETi2RDxY" />
+    <meta name="description" content="Control the built-in RGB LED on ESP32-C6 with our simple Arduino code. Perfect for IoT projects, embedded systems, and learning microcontroller programming.">
+    <meta name="keywords" content="esp32, rgb, led, built in, esp32-c6, esp32 led built in, esp32 rgb led, esp32 rgb led controller, esp32 rgb led strip, arduino esp32 led, rgb esp32, rgb led esp32, esp32 built in rgb led, esp32-c6 dev kit, esp32 rgb led strip controller, esp32 rgb, esp32 rgb controller, led esp32, esp32 rgb matrix, esp32-c6 release date, esp32 rgbw controller, esp32 led_builtin, esp32-c6 zigbee, esp32 rgb led matrix, esp32-c3 led, esp32 c3 rgb led, led_builtin esp32, esp32 led_builtin pin, 8x8 rgb led matrix arduino, esp32 c6 devkit">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1, h2 { color: #0366d6; }
+        pre { background-color: #f6f8fa; padding: 16px; overflow: auto; }
+        img { max-width: 100%; height: auto; margin: 20px 0; }
+        .highlight { background-color: #fffbcc; padding: 5px; }
+    </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareSourceCode",
+      "name": "ESP32-C6 RGB LED Control",
+      "description": "Arduino code for controlling the built-in RGB LED on ESP32-C6 microcontrollers",
+      "programmingLanguage": "Arduino",
+      "runtimePlatform": "ESP32-C6",
+      "codeRepository": "https://github.com/h4fide/ESP32-C6-RGB-LED-Control",
+      "keywords": "ESP32-C6, RGB LED, Arduino, IoT, GPIO 8"
+    }
+    </script>
+</head>
+<body>
+    <h1>ESP32-C6 RGB LED Control</h1>
+    <p>Welcome to the ESP32-C6 RGB LED Control project! This repository contains Arduino code for easily managing the built-in RGB LED on ESP32-C6 microcontrollers, perfect for IoT and embedded systems projects.</p>
+    
+    <h2>ESP32-C6 Board Overview</h2>
+    <img src="https://docs.espressif.com/projects/esp-dev-kits/en/latest/_images/esp32-c6-devkitm-1-v1-annotated-photo.png" alt="ESP32-C6 DevKitM-1 Board" title="ESP32-C6 DevKitM-1 Board with Annotations">
+    <p>The image above shows the ESP32-C6 DevKitM-1 board. <span class="highlight">The built-in RGB LED is connected to GPIO 8</span>, which is already configured in our code.</p>
+
 </body>
 </html>
