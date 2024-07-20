@@ -92,6 +92,3 @@ void loop() {
 
 Contributions to improve the code or add new features are welcome. Please feel free to submit a pull request or open an issue.
 
-## License
-
-This project is released under the MIT License. See the `LICENSE` file for details.
