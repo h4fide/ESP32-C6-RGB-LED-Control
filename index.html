@@ -17,9 +17,10 @@
     <meta name="twitter:description" content="Master the built-in RGB LED on your ESP32-C6 with our step-by-step Arduino tutorial. Ideal for IoT and embedded systems beginners.">
     <meta name="twitter:image" content="https://i.ibb.co/4f96z43/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="32x32" href="https://i.ibb.co/4f96z43/favicon-32x32.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
     <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
-        h1, h2 { color: #0366d6; }
+        h1, h2, h3 { color: #0366d6; }
         pre { background-color: #f6f8fa; padding: 16px; overflow: auto; }
         img { max-width: 100%; height: auto; margin: 20px 0; }
         .highlight { background-color: #fffbcc; padding: 5px; }
@@ -47,6 +48,30 @@
         nav ul li a {
             text-decoration: none;
             color: #0366d6;
+        }
+        .code-container {
+            position: relative;
+            padding: 16px;
+            border: 1px solid #0366d6;
+            border-radius: 5px;
+            background-color: #f6f8fa;
+            box-shadow: 0 0 10px #ddd;
+
+        }
+        .copy-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            color: #0366d6;
+        }
+        .check-icon {
+            position: absolute;
+            top: 10px;
+            right: 40px;
+            color: #0366d6;
+            display: none;
+
         }
     </style>
     <script type="application/ld+json">
@@ -122,8 +147,9 @@
         </li>
     </ol>
 
-    <h2 id="start">Quick Start</h2>
-    <pre><code>
+    <h2 id="start">Example Code</h2>
+    <div class="code-container">
+        <pre><code>
 #include &lt;Adafruit_NeoPixel.h&gt;
 
 #define LED_PIN 8  // The ESP32-C6 pin connected to the built-in RGB LED
@@ -155,7 +181,10 @@ void loop() {
     setColor(COLOR_OFF);
     delay(500);
 }
-    </code></pre>
+        </code></pre>
+        <i class="bi bi-clipboard copy-icon" onclick="copyCode()"></i>
+        <i class="bi bi-check-circle  check-icon" id="check-icon"></i>
+    </div>
 
     <h2 id="customization">Customization</h2>
     <ul>
@@ -193,6 +222,18 @@ void loop() {
         }
 
         setInterval(changeColor, 1000);
+
+        function copyCode() {
+            const code = document.querySelector('.code-container pre code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const checkIcon = document.getElementById('check-icon');
+                checkIcon.style.display = 'inline';
+                setTimeout(() => {
+                    checkIcon.style.display = 'none';
+                }, 2000);
+                
+            });
+        }
     </script>
 </body>
 </html>
