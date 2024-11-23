@@ -19,73 +19,181 @@
     <link rel="icon" type="image/png" sizes="32x32" href="https://i.ibb.co/4f96z43/favicon-32x32.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
-        h1, h2, h3 { color: #0366d6; }
-        pre { background-color: #f6f8fa; padding: 16px; overflow: auto; }
-        img { max-width: 100%; height: auto; margin: 20px 0; }
-        .highlight { background-color: #fffbcc; padding: 5px; }
+        :root {
+            --bg-primary: #1a1a1a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --accent-color: #4a9eff;
+            --code-bg: #2d2d2d;
+            --border-color: #404040;
+            --highlight-bg: #2d2d2d;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            nav ul li {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            .code-container {
+                font-size: 14px;
+            }
+        }
+
+        h1, h2, h3 {
+            color: var(--accent-color);
+            scroll-margin-top: 2rem;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 16px;
+            overflow-x: auto;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        code {
+            color: var(--text-primary);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .highlight {
+            background-color: var(--highlight-bg);
+            padding: 5px;
+            border-radius: 4px;
+            color: var(--accent-color);
+        }
+
         .header-container {
             display: flex;
             align-items: center;
             gap: 20px;
+            flex-wrap: wrap;
         }
-        #led-demo {
-            width: 1em;
-            height: 1em;
-            border-radius: 50%;
-            background-color: #000;
-            box-shadow: 0 0 10px #000;
-            transition: all 0.5s ease;
+
+        nav {
+            margin: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            position: sticky;
+            top: 0;
+            background-color: var(--bg-primary);
+            z-index: 1000;
+            width: 120%;
         }
+
         nav ul {
             list-style: none;
             padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
         }
-        nav ul li {
-            display: inline;
-            margin-right: 10px;
-        }
+
         nav ul li a {
             text-decoration: none;
-            color: #0366d6;
+            color: var(--accent-color);
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
         }
+
+        nav ul li a:hover {
+            background-color: var(--highlight-bg);
+        }
+
         .code-container {
             position: relative;
             padding: 16px;
-            border: 1px solid #0366d6;
+            border: 1px solid var(--border-color);
             border-radius: 5px;
-            background-color: #f6f8fa;
-            box-shadow: 0 0 10px #ddd;
-
+            background-color: var(--code-bg);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            margin: 20px 0;
         }
+
         .copy-icon {
             position: absolute;
             top: 10px;
             right: 10px;
             cursor: pointer;
-            color: #0366d6;
+            color: var(--accent-color);
+            padding: 5px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            background-color: var(--highlight-bg);
         }
-        .check-icon {
-            position: absolute;
-            top: 10px;
-            right: 40px;
-            color: #0366d6;
-            display: none;
 
+        .copy-icon:hover {
+            background-color: var(--border-color);
+            transform: scale(1.1);
+        }
+
+        .copy-feedback {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent-color);
+            color: var(--bg-primary);
+            padding: 10px 20px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .copy-feedback.visible {
+            opacity: 1;
+        }
+
+        ul, ol {
+            color: var(--text-primary);
+            padding-left: 20px;
+        }
+
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .code-container pre {
+            margin: 0;
+            padding-right: 40px;
         }
     </style>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareSourceCode",
-      "name": "ESP32-C6 RGB LED Control",
-      "description": "Arduino code for controlling the built-in RGB LED on ESP32-C6 microcontrollers",
-      "programmingLanguage": "Arduino",
-      "runtimePlatform": "ESP32-C6",
-      "codeRepository": "https://github.com/h4fide/ESP32-C6-RGB-LED-Control",
-      "keywords": "ESP32-C6, RGB LED, Arduino, IoT, GPIO 8"
-    }
-    </script>
 </head>
 <body>
     <nav>
@@ -102,7 +210,6 @@
 
     <div class="header-container">
         <h1>ESP32-C6 RGB LED Control</h1>
-        <div id="led-demo"></div>
     </div>
     <p>Welcome to the ESP32-C6 built-in RGB LED Configuration Guide! This repository contains Arduino code for easily managing the built-in RGB LED on ESP32-C6 microcontrollers, perfect for IoT and embedded systems projects.</p>
     
@@ -133,7 +240,11 @@
                 <li>Open Arduino IDE</li>
                 <li>Go to File > Preferences</li>
                 <li>Add the following URL to "Additional Boards Manager URLs":<br>
-                <code>https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json</code></li>
+                <div class="code-container">
+                    <pre><code>https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json</code></pre>
+                    <i class="bi bi-clipboard copy-icon" data-copy="https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json"></i>
+                </div>
+                </li>
                 <li>Go to Tools > Board > Boards Manager</li>
                 <li>Search for "esp32" and install the latest version</li>
             </ul>
@@ -149,8 +260,7 @@
 
     <h2 id="start">Example Code</h2>
     <div class="code-container">
-        <pre><code>
-#include &lt;Adafruit_NeoPixel.h&gt;
+        <pre><code>#include &lt;Adafruit_NeoPixel.h&gt;
 
 #define LED_PIN 8  // The ESP32-C6 pin connected to the built-in RGB LED
 #define NUM_LEDS 1
@@ -180,10 +290,8 @@ void loop() {
     delay(500);
     setColor(COLOR_OFF);
     delay(500);
-}
-        </code></pre>
-        <i class="bi bi-clipboard copy-icon" onclick="copyCode()"></i>
-        <i class="bi bi-check-circle  check-icon" id="check-icon"></i>
+}</code></pre>
+        <i class="bi bi-clipboard copy-icon" data-copy="example-code"></i>
     </div>
 
     <h2 id="customization">Customization</h2>
@@ -205,35 +313,68 @@ void loop() {
     </ol>
 
     <h2>Contributing</h2>
-    <p>Contributions to improve the code or add new features are welcome. Please feel free to submit a pull request or open an issue on the <a href="https://github.com/h4fide/ESP32-C6-RGB-LED-Control">GitHub repository</a>.</p>
+    <p>Contributions to improve the code or add new features are welcome. Please feel free to submit a pull request or open an issue on the <span class="highlight"><a href="https://github.com/h4fide/ESP32-C6-RGB-LED-Control">GitHub repository</a>.</span></p>
+
+    <div class="copy-feedback">Code copied to clipboard!</div>
 
     <script>
-        const led = document.getElementById('led-demo');
-        const colors = [
-            '#ff0000', '#ff7f00', '#ffff00', '#00ff00', 
-            '#0000ff', '#4b0082', '#9400d3', '#ffffff'
-        ];
-        let colorIndex = 0;
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyIcons = document.querySelectorAll('.copy-icon');
+            const copyFeedback = document.querySelector('.copy-feedback');
 
-        function changeColor() {
-            led.style.backgroundColor = colors[colorIndex];
-            led.style.boxShadow = `0 0 10px ${colors[colorIndex]}`;
-            colorIndex = (colorIndex + 1) % colors.length;
-        }
+            copyIcons.forEach(icon => {
+                icon.addEventListener('click', async () => {
+                    let textToCopy;
+                    const dataCopy = icon.getAttribute('data-copy');
+                    
+                    if (dataCopy === 'example-code') {
+                        textToCopy = icon.parentElement.querySelector('code').textContent;
+                    } else {
+                        textToCopy = dataCopy;
+                    }
 
-        setInterval(changeColor, 1000);
+                    try {
+                        await navigator.clipboard.writeText(textToCopy);
+                        
+                        // Show feedback
+                        copyFeedback.classList.add('visible');
+                        
+                        // Hide feedback after 2 seconds
+                        setTimeout(() => {
+                            copyFeedback.classList.remove('visible');
+                        }, 2000);
 
-        function copyCode() {
-            const code = document.querySelector('.code-container pre code').innerText;
-            navigator.clipboard.writeText(code).then(() => {
-                const checkIcon = document.getElementById('check-icon');
-                checkIcon.style.display = 'inline';
-                setTimeout(() => {
-                    checkIcon.style.display = 'none';
-                }, 2000);
-                
+                    } catch (err) {
+                        console.error('Failed to copy text: ', err);
+                    }
+                });
             });
-        }
+
+            // Add active state to navigation links based on scroll position
+            const sections = document.querySelectorAll('h2[id]');
+            const navLinks = document.querySelectorAll('nav a');
+
+            function setActiveLink() {
+                let currentSection = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (window.scrollY >= sectionTop - 100) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.style.backgroundColor = link.getAttribute('href').slice(1) === currentSection 
+                        ? 'var(--highlight-bg)' 
+                        : 'transparent';
+                });
+            }
+
+            window.addEventListener('scroll', setActiveLink);
+            setActiveLink(); // Set initial state
+        });
     </script>
 </body>
 </html>
