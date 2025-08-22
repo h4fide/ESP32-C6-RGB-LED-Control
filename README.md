@@ -1,6 +1,6 @@
 # ESP32-C6 RGB LED Control
 
-This repository contains Arduino code for controlling the built-in RGB LED on the ESP32-C6 microcontroller. It provides a simple and flexible way to manage LED colors.
+This repository contains Arduino code for controlling the built-in RGB LED on the ESP32-C6 microcontroller. It provides a simple and flexible way to manage LED colors with brightness control.
 
 ## Important Note
 
@@ -10,9 +10,9 @@ The built-in RGB LED on the ESP32-C6 is connected to `GPIO 8`. This is already c
 
 - Easy control of the built-in RGB LED on GPIO 8
 - Predefined color constants for common colors
+- Brightness control (0-100%)
 - Simple function to set any RGB color
 - Easily expandable to include more colors and patterns
-
 
 ## Software Requirements
 
@@ -34,18 +34,6 @@ The built-in RGB LED on the ESP32-C6 is connected to `GPIO 8`. This is already c
    - Go to Sketch > Include Library > Manage Libraries
    - Search for "Adafruit NeoPixel"
    - Install the latest version
-
-...
-
-## Customization
-
-- The `LED_PIN` is set to `8` for the built-in LED. Do not change this unless you're using an external LED.
-- Add new color definitions in the `RGB` struct format
-- Create new light patterns by combining `setColor()` function with different delays
-- Modify the `BLINK_DURATION` to change the speed of the blinking pattern
-- Create new light patterns by combining setColor() and blinkColor() function
-
-...
 
 ## Usage
 
@@ -72,23 +60,37 @@ constexpr RGB COLOR_OFF   = {0, 0, 0};
 // ...Feel free to add more colors here...
 constexpr RGB CUSTOM_COLOR = {255, 0, 255}; 
 
+void setColor(const RGB& color, uint8_t brightness = 100) {
+    uint16_t scale = (uint16_t)brightness * 255 / 100;
+    uint8_t r = (uint8_t)(((uint16_t)color.r * scale) / 255);
+    uint8_t g = (uint8_t)(((uint16_t)color.g * scale) / 255);
+    uint8_t b = (uint8_t)(((uint16_t)color.b * scale) / 255);
+    rgbLed.setPixelColor(0, rgbLed.Color(r, g, b));
+    rgbLed.show();
+}
+
 void setup() {
     rgbLed.begin(); 
     rgbLed.show(); 
 }
-void setColor(const RGB& color) {
-    rgbLed.setPixelColor(0, rgbLed.Color(color.r, color.g, color.b));
-    rgbLed.show();
-}
+
 void loop() {
-    setColor(CUSTOM_COLOR);
-    delay(500);
+    setColor(CUSTOM_COLOR, 50); // 50% brightness
+    delay(1000);
     setColor(COLOR_OFF);
-    delay(500);
+    delay(1000);
 }
 ```
+
+## Customization
+
+- The `LED_PIN` is set to `8` for the built-in LED. **Do not change** this unless you're using an external LED.
+- Add new color definitions in the `RGB` struct format
+- Adjust brightness by passing a value (0-100) to setColor()
+- Create new light patterns by combining `setColor()` and `blinkColor()` functions
+- Modify the `BLINK_DURATION` to change the speed of the blinking pattern
+- Customize the brightness level in `blinkColor()` by modifying the hardcoded 50% value
 
 ## Contributing
 
 Contributions to improve the code or add new features are welcome. Please feel free to submit a pull request or open an issue.
-
