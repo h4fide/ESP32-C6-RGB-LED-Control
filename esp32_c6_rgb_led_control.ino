@@ -25,13 +25,17 @@ void setup() {
     rgbLed.show(); 
 }
 
-void setColor(const RGB& color) {
-    rgbLed.setPixelColor(0, rgbLed.Color(color.r, color.g, color.b));
+void setColor(const RGB& color, uint8_t brightness = 100) {
+    uint16_t scale = (uint16_t)brightness * 255 / 100;
+    uint8_t r = (uint8_t)(((uint16_t)color.r * scale) / 255);
+    uint8_t g = (uint8_t)(((uint16_t)color.g * scale) / 255);
+    uint8_t b = (uint8_t)(((uint16_t)color.b * scale) / 255);
+    rgbLed.setPixelColor(0, rgbLed.Color(r, g, b));
     rgbLed.show();
 }
 
 void blinkColor(const RGB& color, unsigned long duration) {
-    setColor(color);
+    setColor(color, 50); // 50% brightness
     delay(duration);
     setColor(COLOR_OFF);
     delay(duration);
