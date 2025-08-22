@@ -44,16 +44,6 @@ The built-in RGB LED on the ESP32-C6 is connected to `GPIO 8`. This is already c
 4. Select the appropriate port from Tools > Port menu
 5. Click the Upload button to flash the code to your ESP32-C6
 
-### Examples
-
-This repo now includes an `examples/` folder with additional playful sketches you can open directly in the Arduino IDE:
-
-- `BreathingColor.ino` – Smooth "breathing" fade in/out using a purple base color (adjust RGB values for other hues).
-- `RandomSparkle.ino` – Random color flashes with variable timing for a subtle sparkle effect.
-- `RainbowCycleHSV.ino` – Continuous HSV-based rainbow cycle for smooth full-spectrum transitions.
-
-To try an example, open it from the `examples/` folder, select your board/port, and upload just like the main sketch.
-
 ## Example
 
 Here's the basic code structure:
